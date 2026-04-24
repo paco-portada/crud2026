@@ -22,13 +22,14 @@
       <?php if (isset($_SESSION['db_error'])) { ?>
       
       <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        Error de conexión a la base de datos: <?= $_SESSION['db_error'] ?>
+        Error de conexión a la base de datos: <?= htmlspecialchars($_SESSION['db_error']) ?>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <?php unset($_SESSION['db_error']); } ?>
     </div>
+  </div>
 
   <?php if ($conn) { ?>
   <div class="row">
@@ -38,6 +39,7 @@
     </div>
   </div>
 
+  <div class="row">
     <div class="col-md-12">
       <table class="table table-bordered">
         <thead>
@@ -72,13 +74,14 @@
             } catch (mysqli_sql_exception $e) {
             $_SESSION['message'] = 'Error fetching tasks: ' . $e->getMessage();
             $_SESSION['message_type'] = 'danger';
-            $result_tasks = [];
           }
           ?>
         </tbody>
       </table>
     </div>
   </div>
+  <?php } else if (!isset($_SESSION['db_error'])) { ?>
+    <div class="alert alert-warning alert-dismissible fade show" role="alert>The database connection is unavailable or the user/password is incorrect. Please check your configuration.</div>
   <?php } ?>
 </main>
 

@@ -28,7 +28,14 @@ if  (isset($_GET['id'])) {
 }
 
 if (isset($_POST['update'])) {
-  $id = $_GET['id'];
+  if (!$conn) {
+    $_SESSION['message'] = 'Database connection failed. Cannot update task.';
+    $_SESSION['message_type'] = 'danger';
+    header('Location: index.php');
+    exit();
+  }
+
+  $id = (int)$_GET['id'];
   $title = mysqli_real_escape_string($conn, $_POST['title']);
   $description = mysqli_real_escape_string($conn, $_POST['description']);
   $query = "UPDATE task SET title = '$title', description = '$description' WHERE id = $id";
@@ -50,6 +57,18 @@ if (isset($_POST['update'])) {
   <?php if (isset($_SESSION['message'])) { ?>
     <div class="alert alert-<?= $_SESSION['message_type']?> alert-dismissible fade show" role="alert">
       <?= $_SESSION['message']?>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <?php 
+      unset($_SESSION['message']);
+      unset($_SESSION['message_type']);
+  } ?>
+
+  <?php if (isset($_SESSION['db_error'])) { ?>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      Error de conexión a la base de datos: <?= htmlspecialchars($_SESSION['db_error']) ?>
       <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
