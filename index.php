@@ -81,7 +81,7 @@
     </div>
   </div>
   <?php } else if (!isset($_SESSION['db_error'])) { ?>
-    <div class="alert alert-warning alert-dismissible fade show" role="alert>The database connection is unavailable or the user/password is incorrect. Please check your configuration.</div>
+    <div class="alert alert-warning" role="alert>The database connection is unavailable or the user/password is incorrect. Please check your configuration.</div>
   <?php } ?>
 </main>
 
